@@ -43,13 +43,13 @@ bash "./steps/3-convert-image.sh" "${INFILE}" "${OUTFILE}" "${PLATFORM}"
 ENDGROUP
 
 GROUP "Compress converted CoreOS image..."
-pv "${OUTFILE}" | xz -z --fast --stdout > "${OUTFILE}.xz"
+pv "${OUTFILE}" |  gzip  > "${OUTFILE}.gz"
 ENDGROUP
 
 GROUP "Record metadata..."
 set +u # Just in case we're not running in GHA, don't exit on unset var
 {
-echo "outfile=${OUTFILE#./}.xz"
+echo "outfile=${OUTFILE#./}.gz"
 echo "version=${VERSION}"
 echo "tag=${VERSION}.$(date -I)"
 } | tee -a "$GITHUB_OUTPUT"
